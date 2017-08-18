@@ -41,11 +41,6 @@ object BlockBoundJar extends {
 
   override def onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, side: EnumFacing, fx: Float, fy: Float, fz: Float): Boolean =
   {
-    if(!world.isRemote)
-      {
-        world.markBlockForUpdate(pos)
-      }
-
     val tileEntity:TileEntity=world.getTileEntity(pos)
     if(tileEntity==null || !(tileEntity.isInstanceOf[TileBoundJar]))
       return false;
@@ -78,7 +73,6 @@ object BlockBoundJar extends {
         world.playSound(pos.getX.toDouble + 0.5D, pos.getY.toDouble + 0.5D, pos.getZ.toDouble + 0.5D, "thaumcraft:jar", 0.4F, 1.0F, false)
         world.playSound(pos.getX.toDouble + 0.5D, pos.getY.toDouble + 0.5D, pos.getZ.toDouble + 0.5D, "game.neutral.swim", 0.5F, 1.0F + (world.rand.nextFloat - world.rand.nextFloat) * 0.3F, false)
       }
-      else AuraHelper.pollute(world, pos, jar.amount, true)
     }
     else if (heldItem != null && jar.amount >= 8 && aspect == null)
       {
@@ -90,7 +84,9 @@ object BlockBoundJar extends {
         player.dropItem(newPhial.getItem, 1)
 
       jar.takeFromContainer(jar.aspect, 8)
-      world.playSoundAtEntity(player, "thaumcraft:jar", 0.4F, 1.0F)
+      if (world.isRemote) {
+        world.playSoundAtEntity(player, "thaumcraft:jar", 0.4F, 1.0F)
+      }
     }
     super.onBlockActivated(world,pos,state,player,side,fx,fy,fz)
   }
