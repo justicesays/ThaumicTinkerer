@@ -103,8 +103,6 @@ class TileBoundJar  extends TileJarFillable{
 
         this.markDirty();
         MinecraftForge.EVENT_BUS.post(new BoundNetworkChangedEvent(this.network))
-        this.worldObj.markBlockForUpdate(this.pos);
-
         return amount;
       }
     }
@@ -120,7 +118,6 @@ class TileBoundJar  extends TileJarFillable{
           this.amount = 0;
         }
         this.markDirty();
-        this.worldObj.markBlockForUpdate(this.pos);
         MinecraftForge.EVENT_BUS.post(new BoundNetworkChangedEvent(this.network))
         return true;
       } else {
@@ -134,6 +131,5 @@ class TileBoundJar  extends TileJarFillable{
       super.setAspects(aspects)
       this.markDirty()
       MinecraftForge.EVENT_BUS.post(new BoundNetworkChangedEvent(this.network))
-      this.worldObj.markBlockForUpdate(this.pos);
     }
 }
